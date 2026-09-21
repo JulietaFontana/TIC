@@ -1,4 +1,4 @@
-import Ej1
+import tp2.Ej1 as Ej1
 
 
 def entropiaBinaria(w):
