@@ -1,49 +1,55 @@
 import math
+import Utils1
 
+def vectorEstacionario(matriz):
 
-def vectorEstacionario(M):
+    cantidadEstados = len(matriz)
 
-    N = len(M)
+    estacionario = [1 / cantidadEstados] * cantidadEstados
 
-    vector = [1/N] * N
+    for vuelta in range(10000):
 
-    for repeticion in range(1000):
+        nuevoVector = []
 
-        nuevo = [0] * N
+        for i in range(cantidadEstados):
 
-        for i in range(N):
+            suma = 0
 
-            for j in range(N):
-                nuevo[i] += M[i][j] * vector[j]
+            for j in range(cantidadEstados):
+                suma += matriz[i][j] * estacionario[j]
 
-        vector = nuevo
+            nuevoVector.append(suma)
 
-    return vector
+        diferencia = 0
 
+        for i in range(cantidadEstados):
+            diferencia += abs(nuevoVector[i] - estacionario[i])
 
-def entropiaMarkov(M):
+        estacionario = nuevoVector
 
-    estacionario = vectorEstacionario(M)
+        if diferencia < 0.00000001:
+            break
 
-    N = len(M)
+    return estacionario
 
-    H = 0
+def entropiaMarkov(matriz):
 
-    for i in range(N):
+    estacionario = vectorEstacionario(matriz)
 
-        Hi = 0
+    entropia = 0
 
-        for j in range(N):
+    for j in range(len(matriz)):
 
-            p = M[j][i]
+        probabilidadesEstado = []
 
-            if p != 0:
-                Hi += p * math.log2(1/p)
+        for i in range(len(matriz)):
+            probabilidadesEstado.append(matriz[i][j])
 
-        H += estacionario[i] * Hi
+        entropiaEstado = Utils1.entropiaBase2(probabilidadesEstado)
 
-    return H
+        entropia += estacionario[j] * entropiaEstado
 
+    return entropia
 
 M = [
     [1/2, 1/3, 0],
@@ -57,3 +63,11 @@ print(vectorEstacionario(M))
 
 print("Entropia:")
 print(entropiaMarkov(M))
+
+estacionario = vectorEstacionario(M)
+entropia = entropiaMarkov(M)
+
+print("Vector estacionario:",
+      [round(p, 4) for p in estacionario])
+
+print("Entropía:", round(entropia, 2), "bits/símbolo")

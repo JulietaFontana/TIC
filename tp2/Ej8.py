@@ -1,11 +1,10 @@
-import tp2.Ej1 as Ej1
+import Utils1
 
+omega = float(input("Ingrese omega: "))
 
-def entropiaBinaria(w):
-    lista = [w, 1-w]
+probabilidades = [omega, 1 - omega]
 
-    L1 = Ej1.generaLista(lista)
-    Ej1.entropia(lista, L1)
+entropia = Utils1.entropiaBase2(probabilidades)
 
-
-entropiaBinaria(0.25)
+print("Probabilidades:", probabilidades)
+print("Entropía:", round(entropia, 2), "bits")

@@ -1,7 +1,8 @@
-import math
+import Utils1
 
-def entropiaEquiprobable():
-    h= P*math.log2(1/P)
-    return h
+probabilidadesDado1 = [1/6, 1/6, 1/6, 1/6, 1/6, 1/6]
+probabilidadesDado2 = [1/9, 1/6, 1/9, 1/9, 1/6, 1/3]
 
-def 
+
+print("Entropía del dado equilibrado:", Utils1.entropiaBase2(probabilidadesDado1))
+print("Entropía del dado no equilibrado:", Utils1.entropiaBase2(probabilidadesDado2))
