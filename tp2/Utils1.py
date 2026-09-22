@@ -1,4 +1,5 @@
 import math
+import random
 
 def obtenerFuente(mensaje): #generaAlfabeto y prob
     alfabeto = ""
@@ -115,3 +116,82 @@ def entropiaMarkov(matriz):
         entropia += estacionario[j] * entropiaEstado
 
     return entropia
+
+def obtenerMatrizTransicion(mensaje):
+
+    alfabeto, probabilidades = obtenerFuente(mensaje)
+
+    cantidadEstados = len(alfabeto)
+
+    matriz = []
+
+    # Crear matriz llena de ceros
+    for i in range(cantidadEstados):
+
+        fila = []
+
+        for j in range(cantidadEstados):
+            fila.append(0)
+
+        matriz.append(fila)
+
+    # Contar las transiciones del mensaje
+    for i in range(len(mensaje) - 1):
+
+        origen = alfabeto.index(mensaje[i])
+        destino = alfabeto.index(mensaje[i + 1])
+
+        matriz[destino][origen] += 1
+
+    # Convertir cantidades en probabilidades
+    for j in range(cantidadEstados):
+
+        total = 0
+
+        for i in range(cantidadEstados):
+            total += matriz[i][j]
+
+        if total > 0:
+
+            for i in range(cantidadEstados):
+                matriz[i][j] /= total
+
+    return alfabeto, matriz
+
+def generarMensajeMarkov(N, alfabeto, matriz, inicial):
+
+    mensaje = inicial
+
+    while len(mensaje) < N:
+
+        origen = alfabeto.index(mensaje[-1])
+
+        probabilidades = []
+
+        for i in range(len(alfabeto)):
+            probabilidades.append(matriz[i][origen])
+
+        siguiente = random.choices(
+            alfabeto,
+            weights=probabilidades,
+            k=1
+        )[0]
+
+        mensaje += siguiente
+
+    return mensaje
+
+def tieneMemoria(matriz, tolerancia):
+
+    cantidadEstados = len(matriz)
+
+    for i in range(cantidadEstados):
+
+        for j in range(1, cantidadEstados):
+
+            diferencia = abs(matriz[i][j] - matriz[i][0])
+
+            if diferencia > tolerancia:
+                return True
+
+    return False
