@@ -118,3 +118,23 @@ def longitudMedia(codigo, probabilidades):
         suma += probabilidades[i] * len(codigo[i])
 
     return suma
+
+
+def compacto(codigo, probabilidades):
+
+    if not univocamenteDecodificable(codigo):
+        return False
+
+    r = len(alfabetoCodigo(codigo))
+
+    for i in range(len(codigo)):
+
+        p = probabilidades[i]
+        largo = len(codigo[i])
+
+        limite = math.ceil(math.log(1 / p, r))
+
+        if largo > limite:
+            return False
+
+    return True
