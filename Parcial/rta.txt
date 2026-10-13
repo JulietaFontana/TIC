@@ -1,0 +1,78 @@
+Explicar brevemente cómo se obtuvieron los resultados:   
+a. Para obtener el alfabeto se dejan solo los símbolos distintos en el mensaje. La probabilidad de cada símbolo se calcula 
+contando la cantidad de apariciones y dividiéndola por la cantidad total.
+b. Para obtener la matriz de transición se contaron las transiciones entre cada símbolo y el símbolo siguiente. Luego, para cada estado 
+de origen, se dividió la cantidad de cada transición por el total de transiciones que parten de ese estado, obteniendo así las 
+probabilidades de transición.
+c. Para estimar si la fuente posee memoria se compararon las columnas de la matriz de transición utilizando una tolerancia. 
+Si las probabilidades de las columnas son aproximadamente iguales, se considera una fuente de memoria nula sino es con memoria.
+d. Para una fuente de memoria nula, la entropía es la suma de la información de cada símbolo multiplicado por su probabilidad. 
+Para una fuente con memoria, se calculó la entropía de las transiciones de cada estado y se ponderó utilizando el vector estacionario.
+e. Si la fuente es de memoria nula, se obtiene la extensión de orden 2 formando todas las combinaciones posibles de dos símbolos. 
+La probabilidad de cada combinación se calcula multiplicando las probabilidades de sus símbolos y, a partir de estas nuevas probabilidades, 
+se calcula la entropía de la extensión.
+es el doble porque ahora cada símbolo de la fuente extendida representa dos símbolos de la fuente original, 
+Como son independientes, la información de ambos se suma.
+f. Si la fuente posee memoria, se obtuvo el vector estacionario de forma iterativa, multiplicando la matriz de transición por el vector 
+de probabilidades hasta que la diferencia entre dos iteraciones consecutivas sea menor que la tolerancia
+El vector estacionario representa las probabilidades de encontrarse en cada estado cuando la distribución se estabiliza.
+(las probabilidades es regimen estacionario)
+
+Analizar los resultados obtenidos y realizar conclusiones al respecto:
+Análisis y conclusiones:
+A partir de la matriz de transición se observa que las probabilidades de transición son aprox iguales independientemente del 
+símbolo anterior, por lo que se concluye que la fuente es de memoria nula. Esto significa que la probabilidad de aparición del próximo 
+símbolo no depende del símbolo emitido anteriormente.
+La entropía obtenida representa la cantidad promedio de información por símbolo de la fuente. Al realizar la extensión de orden 2, se 
+consideran pares de símbolos y su entropía resulta el doble de la entropía original, como es esperable para una fuente de memoria nula.
+
+Y si te toca la segunda fuente, que en ese parcial resulta con memoria, cambiaría la conclusión a:
+Análisis y conclusiones:
+Al comparar las columnas de la matriz de transición se observan diferencias entre las probabilidades según el estado anterior, 
+por lo que se concluye que la fuente posee memoria. Esto significa que la probabilidad del próximo símbolo depende del símbolo emitido anteriormente.
+En este caso se utiliza la entropía de una fuente de Markov y se obtiene el vector estacionario, que representa las probabilidades 
+de los estados cuando la fuente alcanza su régimen estacionario.
+
+Explicar brevemente cómo se obtuvieron los resultados
+a. En el alfabeto código se almacenan los símbolos distintos utilizados para formar las palabras código.
+b. La entropía es la cantidad de informacion media de una fuente, entonce se calcula con la sumatoria de probalidad * informacion.
+La longitud media es la sumatoria de la multiplicacion de la longitud de cada palabra código por su probabilidad .
+c. La inecuación de Kraft-McMillan se calcula con la sumatoria de r^(-l_i), donde r es la cantidad de símbolos del alfabeto código 
+y l la longitud (calculada en longitudes) de cada palabra. Si el resultado es menor o igual a 1, cumple la inecuación.
+Por lo tanto, esas longitudes son compatibles con la existencia de un código unívocamente decodificable.Pero NO podés concluir que el código concreto que te dieron sea UD solamente por eso
+si K>1 si podemos decir que no puede ser UD 
+d. El código se clasificó verificando sus propiedades: no singular, unívocamente decodificable e instantáneo. 
+Para que sea no singular, verifico que el largo de la lista sea igual al largo de la lista con set (set me devuelve la lista sin repetidos).
+Para ser instantáneo verifico los prefijos es decir, que ninguna palabra comience con la otra.
+Para comprobar si es unívocamente decodificable, primero verifico si no es no singular y devuelvo false, si es instantaneo es condicion suficiente para ser UD, 
+y sino utilizo el algoritmo de Sardinas-Patterson. 
+e. Un código será compacto cuando todas las palabras cumplen que su longitud media es menor o igual al techo de la informacion. 
+Un código compacto ideal será cuando cumple la condicion anterior y además la entropía(en su correspondiente base) es IGUAL a la longitud media.
+f. Con Sardinas-Patterson, se obtuvieron sucesivamente los conjuntos de sufijos resultantes de comparar las palabras código. 
+El procedimiento sigue hasta poder determinar si el código es o no unívocamente decodificable, es decir que un sufijo se encuentre dentro mi conjunto de palabras codigo C u otro conjunto de sufijos.
+
+
+Analizar los resultados obtenidos y realizar conclusiones
+
+Podemos observar que ambos codigos tienen misma entropía, longitud media y kraft lo que es logico ya que todas las fuentes tienen igual longitud y probabilidad
+
+Código 1: A partir de los resultados obtenidos se concluye que el código no es singular y, además, no es unívocamente decodificable, 
+por lo que una secuencia codificada puede presentar ambigüedad al intentar recuperar el mensaje original. Tampoco es instantáneo. 
+Aunque cumpla la inecuación de Kraft-McMillan, esto por sí solo no garantiza que este código particular sea unívocamente decodificable.
+y compacto?
+Código 2: Se concluye que el código es instantáneo, ya que ninguna palabra código es prefijo de otra. En consecuencia, también es 
+unívocamente decodificable y no singular. La inecuación de Kraft-McMillan permite analizar si las longitudes utilizadas son compatibles 
+con un código instantáneo.
+
+
+
+
+
+
+
+La matriz contiene las probabilidades de que ocurra un símbolo dado el símbolo anterior. Si sus columnas son aproximadamente iguales, 
+considerando una tolerancia, la fuente se considera de memoria nula. Si presentan diferencias significativas, tiene memoria.
+
+si tiene memoria Markov, no alcanza con usar las probabilidades simples de los símbolos. Hay considerar las probabilidades de transición 
+y el vector estacionario. entonces se calcula la entropía correspondiente a las probabilidades de transición de cada estado y después se pondera 
+por la probabilidad estacionaria de encontrarte en ese estado.
