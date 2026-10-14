@@ -1,9 +1,10 @@
 import Utils
-def rendimientoRedundancia(probabilidades, codigo):
-    H = Utils.entropia(codigo, probabilidades)
-    L = Utils.longitudMedia(codigo, probabilidades)
+def rendimiento(probabilidades, codigo):
+    H = entropia(codigo, probabilidades)
+    L = longitudMedia(codigo, probabilidades)
 
-    rendimiento = H / L
-    redundancia = 1 - rendimiento
+    return H / L
 
-    return rendimiento, redundancia
+
+def redundancia(probabilidades, codigo):
+    return 1 - rendimiento(probabilidades, codigo)

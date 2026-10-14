@@ -134,11 +134,48 @@ def shannonFano(probabilidades):
     return codigo
 
 
-def rendimientoRedundancia(probabilidades, codigo):
+def rendimiento(probabilidades, codigo):
     H = entropia(codigo, probabilidades)
     L = longitudMedia(codigo, probabilidades)
 
-    rendimiento = H / L
-    redundancia = 1 - rendimiento
+    return H / L
 
-    return rendimiento, redundancia
+
+def redundancia(probabilidades, codigo):
+    return 1 - rendimiento(probabilidades, codigo)
+
+
+def distanciaHamming(palabra1, palabra2):
+    distancia = 0
+
+    for i in range(len(palabra1)):
+        if palabra1[i] != palabra2[i]:
+            distancia += 1
+
+    return distancia
+
+
+def distanciaMinima(codigo):
+    minimo = len(codigo[0])
+
+    for i in range(len(codigo)):
+        for j in range(i + 1, len(codigo)):
+            distancia = distanciaHamming(codigo[i], codigo[j])
+
+            if distancia < minimo:
+                minimo = distancia
+
+    return minimo
+
+def detecta(codigo):
+    d = distanciaMinima(codigo)
+    return d - 1
+def corrige(codigo):
+    d = distanciaMinima(codigo)
+    return (d - 1) // 2
+
+def analizaCod(codigo):
+    print("Distancia Hamming", distanciaMinima(codigo))
+    print("detecta", detecta(codigo))
+    print("corrige", corrige(codigo))
+
