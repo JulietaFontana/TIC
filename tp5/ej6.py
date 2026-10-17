@@ -1,22 +1,12 @@
+import Utils
 
-def decodificar(mensaje, alfabeto, codigo):
-    resultado = ""
-    bits = ""
+alfabeto = ["S1", "S2", "S3", "S4"]
+codigo = ["BA", "CAB", "A", "CBA"]
 
-    for bit in mensaje:
-        bits += bit
+mensajeA = "ABACBAACABABAACBABA"
+mensajeB = "BACBAAABAAACBABACAB"
+mensajeC = "CBAABACBABAAACABABA"
 
-        if bits in codigo:
-            posicion = codigo.index(bits)
-            resultado += alfabeto[posicion]
-            bits = ""
-
-    return resultado
-
-
-alfabeto = ["A", "B", "C", "D"]
-codigo = ["0", "10", "110", "111"]
-
-mensaje = "0101101110"
-
-print(decodificar(mensaje, alfabeto, codigo))
+print("6.a:", Utils.decodificar(mensajeA, alfabeto, codigo))
+print("6.b:", Utils.decodificar(mensajeB, alfabeto, codigo))
+print("6.c:", Utils.decodificar(mensajeC, alfabeto, codigo))
