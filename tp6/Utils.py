@@ -216,3 +216,87 @@ def matrizReduccion(matriz, c1, c2):
         R.append(fila)
 
     return R
+
+def reducirCanal(matriz):
+    reducida = [fila[:] for fila in matriz]
+
+    while True:
+        encontrada = False
+        columnas = len(reducida[0])
+        for c1 in range(columnas):    #recorre las columnas y busca proporcionales
+            for c2 in range(c1 + 1, columnas):
+                if columnasProporcionales(reducida, c1, c2):
+                    R = matrizReduccion(reducida, c1, c2)  #genera matriz de reduccion
+                    reducida = canalCompuesto(reducida, R)
+                    encontrada = True
+                    break
+            if encontrada:
+                break
+        if not encontrada:
+            break
+    return reducida
+
+
+def canalUniforme(matriz):
+    filas = len(matriz)
+    columnas = len(matriz[0])
+
+    for fila in matriz:
+        if sorted(fila) != sorted(matriz[0]):
+            return False
+
+    suma = sum(matriz[i][0] for i in range(filas))
+
+    for j in range(1, columnas):
+        if abs(sum(matriz[i][j] for i in range(filas)) - suma) > 1e-9:
+            return False
+
+    return True
+
+
+def capacidadDeterminante(matriz):
+    salidas = set()
+
+    for fila in matriz:
+        salidas.add(fila.index(1))
+
+    return math.log2(len(salidas))
+
+
+def capacidadSinRuido(matriz):
+    return math.log2(len(matriz))
+
+
+def capacidadUniforme(matriz):
+    return math.log2(len(matriz[0])) - entropiaAPriori(matriz[0])
+
+
+def capacidadBinaria(matriz, paso):
+    if paso <= 0 or paso > 1:
+        raise ValueError("El paso debe estar entre 0 y 1")
+
+    capacidad = -1
+    mejorProbabilidad = 0
+    cantidad = math.ceil(1 / paso)
+    for i in range(cantidad + 1):
+        p = min(i * paso, 1)
+        apriori = [p, 1 - p]
+        informacion = informacionMutua(apriori, matriz)
+        if informacion > capacidad:
+            capacidad = informacion
+            mejorProbabilidad = p
+
+    return capacidad, mejorProbabilidad
+
+def probabilidadError(apriori, matriz):
+    error = 0
+
+    for j in range(len(matriz[0])):
+        probabilidades = []
+
+        for i in range(len(matriz)):
+            probabilidades.append(apriori[i] * matriz[i][j])
+
+        error += sum(probabilidades) - max(probabilidades)
+
+    return error

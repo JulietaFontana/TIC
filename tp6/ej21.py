@@ -25,15 +25,26 @@ M4 = [
     [0.0, 0.5, 0.0, 0.5],
     [0.8, 0.0, 0.2, 0.0]
 ]
-c1 = 0
-c2 = 1
 
-if Utils.columnasProporcionales(M1, c1, c2):
-    R = Utils.matrizReduccion(M1, c1, c2)
-    reducida = Utils.canalCompuesto(M1, R)
 
-    print("Matriz reducida:")
-    for fila in reducida:
-        print(fila)
-else:
-    print("Las columnas no se pueden combinar")
+
+for numero, matriz in enumerate([M1, M2, M3, M4], 1):
+    apriori = [1 / len(matriz)] * len(matriz)
+    reducida, pasos = Utils.reducirCanal(matriz, True)
+
+    print("\nCANAL", numero)
+    print("Información mutua original:",
+          round(Utils.informacionMutua(apriori, matriz), 4))
+
+    for numeroPaso, (c1, c2, nuevaMatriz) in enumerate(pasos, 1):
+        print("\nReducción", numeroPaso)
+        print("Columnas:", c1 + 1, "y", c2 + 1)
+
+        for fila in nuevaMatriz:
+            print([round(valor, 4) for valor in fila])
+
+        print("Información mutua:",
+              round(Utils.informacionMutua(apriori, nuevaMatriz), 4))
+
+    print("\n¿Canal determinante?",
+          Utils.canalDeterminante(reducida))
