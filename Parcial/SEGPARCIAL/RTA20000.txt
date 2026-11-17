@@ -1,0 +1,45 @@
+Ejercicio 1 — Fuentes y codificación RECU 
+
+**a** Para estimar la entropía, se decodificó el mensaje utilizando el código C. A partir de las frecuencias relativas de los símbolos obtenidos 
+se calcularon sus probabilidades y posteriormente la entropía mediante la fórmula de Shannon. 
+A partir de sus frecuencias relativas se obtuvieron las probabilidades de los cuatro símbolos y se calculó la entropía mediante la fórmula de 
+Shannon, obteniendo H(S) = 1,9056 bits/símbolo. Este valor es cercano al máximo teórico de 2 bits para cuatro símbolos, lo que indica que la 
+fuente presenta una incertidumbre elevada y una distribución cercana a la equiprobabilidad.
+
+**b** Para generar el código óptimo de la extensión de orden 3, se calcularon las probabilidades de las combinaciones de tres símbolos, 
+suponiendo una fuente sin memoria, y se aplicó el algoritmo de Huffman. Este procedimiento asigna palabras más cortas a las secuencias más 
+probables, minimizando la longitud media entre los códigos binarios prefijos.
+
+**c** Para el código original se obtuvo una longitud media L = 2 bits/símbolo, un rendimiento del 95,28 % y una redundancia del 4,72 %. 
+Para el código de la extensión se obtuvo L = 5,7578 bits por bloque de tres símbolos, un rendimiento del 99,29 % y una redundancia del 0,71 %. 
+El rendimiento se calculó como el cociente entre entropía y longitud media, y la redundancia como su complemento. 
+Los resultados muestran que la extensión permite aprovechar mejor la codificación, disminuyendo la redundancia.
+
+**d** La entropía representa el límite teórico inferior de la longitud media de un código binario prefijo. 
+En el código original, H(S) = 1,9056 es menor que L = 2. Para la extensión, la entropía es H(S³) = 3H(S) = 5,7168 bits por bloque, 
+valor más cercano a su longitud media de 5,7578. Por lo tanto, la codificación de la extensión resulta más eficiente, ya que su longitud media 
+se aproxima más al límite teórico y su redundancia disminuye considerablemente. Si se divide la longitud media de la extensión por 3, 
+se obtienen aproximadamente 1,9193 bits/símbolo, frente a los 2 bits/símbolo del código original. Esto confirma que la extensión mejora la 
+eficiencia de la codificación y cumple el Primer Teorema de Shannon.     Así se ve que la extensión está más cerca de la entropía y comprime mejor. 
+En ambos casos se cumple el límite de Shannon: la longitud media no baja de la entropía. La extensión mejora la eficiencia, pero no elimina por completo la redundancia.
+
+Ejercicio 2 — Canales de información
+**a** Para obtener la distribución de entrada óptima se buscó la combinación de probabilidades P(0) y P(1) que maximiza la información mutua 
+entre la entrada y la salida, es decir, la capacidad del canal. Se obtuvo P(0) = 0,5643 y P(1) = 0,4357. Esto demuestra que la distribución 
+óptima no necesariamente es equiprobable, sino que depende de las probabilidades de transición del canal.
+
+**b** Utilizando la distribución óptima se calcularon las métricas del canal. La equivocación H(A|B) = 0,3698 bits representa la 
+incertidumbre que permanece sobre la entrada después de conocer la salida. Al ser mayor que cero, indica que no siempre es posible identificar 
+exactamente el símbolo transmitido. La pérdida H(B|A) = 0,6631 bits representa la incertidumbre sobre la salida aun conociendo la entrada, 
+debido a que una entrada puede producir distintas salidas. La información mutua I(A;B) = 0,6182 bits indica cuánta información sobre la entrada 
+se obtiene al observar la salida. Como se utilizó la distribución óptima, este valor corresponde a la capacidad del canal.
+
+**c** Para detectar y corregir errores se analizó el mensaje recibido mediante los bits de paridad vertical, longitudinal y cruzada. 
+Estos permiten comprobar la consistencia de los bits y, cuando existe un único error corregible, localizarlo mediante la intersección de la 
+fila y la columna que presentan paridad incorrecta. Luego de aplicar el procedimiento se obtuvo el mensaje corregido «ok». 
+El método permite corregir un error individual, pero no garantiza la corrección de cualquier combinación de errores múltiples.
+
+**d** Según la matriz del canal, si se transmite un 0, necesariamente se recibe C, mientras que si se transmite un 1, pueden recibirse A, B o C. 
+Por lo tanto, al recibir A o B se tiene certeza de que se transmitió un 1, mientras que recibir C no permite identificar la entrada con certeza. 
+Las transiciones de 0 hacia A o B son imposibles, ya que tienen probabilidad nula. En consecuencia, cualquier transmisión que requiera alguna de 
+estas transiciones no podría haberse producido por este canal.

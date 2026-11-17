@@ -1,0 +1,45 @@
+El código presenta una eficiencia del 90 %, ya que su longitud media es cercana a la entropía de la fuente. La redundancia restante indica que se utilizan bits adicionales respecto del límite teórico de compresión.
+Importante:  buscamos reducir redundancia para comprimir. En codificación para detectar errores, en cambio, agregamos redundancia deliberadamente.
+Si obtenés...	Qué significa y cómo justificarlo
+Entropía igual a 0	                        La fuente es completamente predecible.
+Entropía máxima	                            Los símbolos son equiprobables.
+\(L\) cercana a \(H\)	                    La codificación es eficiente.
+Código instantáneo	                        Ninguna palabra código es prefijo de otra.
+Equivocación igual a 0	                    La salida permite identificar la entrada sin incertidumbre.
+Información mutua igual a 0	                La salida no aporta información sobre la entrada.
+Información mutua igual a \(H(A)\)	        Toda la información de entrada puede recuperarse desde la salida.
+Columnas proporcionales	                    Es posible una reducción suficiente.
+Una fila y columna con error de paridad	    Se puede localizar un bit erróneo, bajo la hipótesis de error único.
+
+Tasa de compresión= calcula cuanto se redujo el mensaje despues de codificarlo, TC>1 hubo compresion
+                                                                                TC=1 el tam no cambio
+                                                                                TC<1 el mens aumento de tamaño
+                                                                                
+Huffman: une repetidamente los dos símbolos menos probables. Produce un código prefijo de longitud media mínima para las probabilidades dadas.
+Shannon–Fano: ordena por probabilidades y divide en grupos con probabilidades acumuladas lo más equilibradas posible. No siempre consigue el óptimo.
+Los dos algoritmos buscan códigos eficientes/ con buen rendimiento
+
+rendimiento = (η) Es la eficiencia de un código, es decir, qué proporción de bits utilizados la representa información de la fuente.
+Cuanto más cercano a 1 (100 %), más eficiente es el código, porque su longitud media se aproxima al mínimo teórico.
+redundancia = (R) Es la proporción de bits adicionales que utiliza el código respecto de la información mínima necesaria.
+Cuanto más cercana a 0, menor redundancia y mayor eficiencia.
+
+Canal sin ruido = Al recibir un simbolo, se exactamente que simbolo se habia enviado (solo un val!=0 por columna)  H(A/B) = 0. I(A,B) = H(A)                  
+Canal determinante= siempre que envio A, se lo que recibo (solo un 1 por fila) H(B/A) = 0 I(A,B) = H(B)              
+Ambos = Una sola salida por entrada, no hay duda de nada 
+
+Equivocación H(A/B): incertidumbre de la entrada después de obtener la salida.  H(A/B) = 0    La salida permite identificar la entrada sin incertidumbre.
+                                                                                H(A/B) > 0    Todavía existe incertidumbre sobre la entrada.
+                                                                                H(B/A) = H(A) La salida no aporta información sobre la entrada.
+
+Pérdida H(B/A): incertidumbre de la salida aun conociendo la entrada.           H(B/A) = 0    La salida está completamente determinada por la entrada. Canal determinante
+                                                                                H(B/A) > 0    Una misma entrada puede producir diferentes salidas.
+                                                                                H(B/A) = H(B) Conocer la entrada no reduce la incertidumbre sobre la salida.
+
+Información mutua I(A,B): información de la entrada que conocemos gracias a la salida.  I(A,B)=0     La salida no aporta información sobre la entrada.
+                                                                                        I(A,B)>0     La salida permite conocer parcialmente o totalmente la entrada.
+                                                                                        I(A,B)= H(A) Toda la información de la entrada puede recuperarse de la salida.
+
+Al tener símbolos de entrada equiprobables, la entropía a priori alcanza su valor máximo, ya que inicialmente existe la mayor incertidumbre posible sobre el 
+símbolo enviado. Sin embargo, la equivocación depende del comportamiento del canal: cuanto mayor sea la información que aporta la salida sobre la entrada, 
+menor será la incertidumbre restante y mayor la información mutua.

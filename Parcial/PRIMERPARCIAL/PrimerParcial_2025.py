@@ -1,5 +1,5 @@
-import Utils
-import Utils1
+import Parcial.PRIMERPARCIAL.Utils as Utils
+import Parcial.PRIMERPARCIAL.Utils1 as Utils1
 """
 mensaje = ")[))[([()))()[[]](([[)))])))][))(][)[[[)()]))[)[])"
 

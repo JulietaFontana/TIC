@@ -1,0 +1,171 @@
+GUÍA SIMPLE DE FUNCIONES — U2.py
+Basada en el archivo que subiste. Explicación breve y paso a paso.
+
+IDEA GENERAL
+En las funciones del canal: apriori = probabilidades de entrada; matriz = P(salida|entrada).
+ATENCIÓN: en U2.py, equivocacion, perdida e informacionMutua reciben (apriori, matriz).
+
+
+1. obtenerFuente(mensaje)
+Recibe: Mensaje de símbolos.
+Paso a paso: 1. Recorre el mensaje y arma un alfabeto sin repetidos. 2. Ordena los símbolos. 3. Cuenta cuántas veces aparece cada uno y divide por el largo del mensaje.
+Devuelve: Alfabeto y lista de probabilidades.
+
+2. entropia(probabilidades)
+Recibe: Lista de probabilidades.
+Paso a paso: 1. Empieza con H=0. 2. Para cada probabilidad positiva calcula -p·log2(p). 3. Suma todos los aportes.
+Devuelve: Entropía en bits por símbolo.
+
+3. codificarBytes(mensaje, alfabeto, codigo)
+Recibe: Mensaje, alfabeto y código.
+Paso a paso: 1. Busca el código de cada símbolo y concatena los bits. 2. Guarda cuántos bits reales hay. 3. Agrega ceros hasta completar bytes de 8 bits. 4. Convierte cada grupo en un byte.
+Devuelve: Datos en bytearray y cantidad de bits originales.
+
+4. tasaCompresion(mensaje, datos)
+Recibe: Mensaje original y datos comprimidos.
+Paso a paso: 1. Calcula los bytes del texto original en UTF-8. 2. Cuenta los bytes comprimidos. 3. Divide tamaño original por tamaño comprimido.
+Devuelve: Relación de compresión; mayor que 1 significa que ocupa menos. Incluye los ceros de relleno del último byte.
+
+5. extenderFuente(N, alfabeto, probabilidades)
+Recibe: Orden N, alfabeto y probabilidades.
+Paso a paso: 1. Comienza con un símbolo vacío de probabilidad 1. 2. Repite N veces: combina cada bloque actual con cada símbolo. 3. Multiplica probabilidades y guarda los nuevos bloques.
+Devuelve: Alfabeto extendido y probabilidades de los bloques. Supone fuente sin memoria.
+
+6. longitudMedia(codigo, probabilidades)
+Recibe: Código y probabilidades.
+Paso a paso: 1. Recorre cada palabra del código. 2. Multiplica su longitud por su probabilidad. 3. Suma los resultados.
+Devuelve: Longitud media en bits por símbolo o por bloque.
+
+7. rendimiento(probabilidades, codigo)
+Recibe: Probabilidades y código.
+Paso a paso: 1. Calcula la entropía H. 2. Calcula la longitud media L. 3. Divide H/L.
+Devuelve: Eficiencia entre 0 y 1, si el código es válido y L es positiva.
+
+8. redundancia(probabilidades, codigo)
+Recibe: Probabilidades y código.
+Paso a paso: 1. Llama a rendimiento. 2. Resta ese valor de 1.
+Devuelve: Proporción de redundancia.
+
+9. huffman(probabilidades)
+Recibe: Lista de probabilidades.
+Paso a paso: 1. Crea un nodo por símbolo. 2. Ordena nodos de menor a mayor probabilidad. 3. Une los dos menores y suma sus probabilidades. 4. Repite hasta tener un árbol. 5. Recorre ramas 0 y 1 para asignar códigos.
+Devuelve: Código binario prefijo óptimo, alineado con el orden de probabilidades.
+
+10. shannonFano(probabilidades)
+Recibe: Lista de probabilidades.
+Paso a paso: 1. Ordena los símbolos de mayor a menor probabilidad. 2. Busca dividirlos en dos grupos con sumas parecidas. 3. Asigna 0 a un grupo y 1 al otro. 4. Repite hasta separar cada símbolo.
+Devuelve: Código binario prefijo; no siempre tan eficiente como Huffman.
+
+11. verificarShannon(probabilidades, codigo)
+Recibe: Probabilidades y código.
+Paso a paso: 1. Calcula H. 2. Calcula L sumando probabilidad por longitud. 3. Comprueba H <= L < H+1.
+Devuelve: True o False según la desigualdad. Para extensión, H y L deben expresarse ambos por bloque.
+
+12. matrizCanal(entrada, salida)
+Recibe: Secuencias de entrada y salida, de igual longitud.
+Paso a paso: 1. Obtiene los símbolos distintos de entrada y salida. 2. Para cada par entrada-salida cuenta coincidencias. 3. Divide por la cantidad de veces que apareció esa entrada. 4. Forma filas y las imprime.
+Devuelve: Matriz de transición P(salida|entrada).
+
+13. probabilidadesApriori(entrada)
+Recibe: Secuencia de entrada.
+Paso a paso: 1. Ordena los símbolos diferentes. 2. Cuenta cada uno. 3. Divide por la cantidad total de símbolos.
+Devuelve: Probabilidades de entrada, en orden alfabético.
+
+14. canalSinRuido(matriz)
+Recibe: Matriz de transición.
+Paso a paso: 1. Recorre cada columna (cada salida). 2. Cuenta cuántas entradas tienen probabilidad positiva. 3. Si alguna columna corresponde a más de una entrada, devuelve False.
+Devuelve: True si la salida identifica sin ambigüedad la entrada.
+
+15. canalDeterminante(matriz)
+Recibe: Matriz de transición.
+Paso a paso: 1. Recorre cada fila (cada entrada). 2. Comprueba si contiene exactamente un 1. 3. Si alguna no lo cumple, devuelve False.
+Devuelve: True si cada entrada produce una única salida.
+
+16. probabilidadesConjuntas(apriori, matriz)
+Recibe: Probabilidades a priori y matriz.
+Paso a paso: 1. Recorre cada casilla de la matriz. 2. Multiplica P(entrada) por P(salida|entrada).
+Devuelve: Matriz de probabilidades conjuntas P(entrada,salida).
+
+17. probabilidadesSalida(apriori, matriz)
+Recibe: Probabilidades a priori y matriz.
+Paso a paso: 1. Recorre cada columna. 2. Suma las contribuciones de todas las entradas: P(entrada)·P(salida|entrada).
+Devuelve: Probabilidad de recibir cada salida.
+
+18. probabilidadesPosteriori(apriori, matriz)
+Recibe: Probabilidades a priori y matriz.
+Paso a paso: 1. Calcula P(salida). 2. Aplica Bayes en cada casilla: P(entrada)·P(salida|entrada)/P(salida). 3. Si una salida es imposible, pone 0.
+Devuelve: Probabilidades P(entrada|salida); para salidas imposibles no existe una posterior real.
+
+19. equivocacion(apriori, matriz)
+Recibe: Probabilidades a priori y matriz.
+Paso a paso: 1. Calcula probabilidades conjuntas. 2. Calcula probabilidades posteriores. 3. Suma -P(entrada,salida)·log2(P(entrada|salida)) para los casos posibles.
+Devuelve: H(entrada|salida): duda sobre lo enviado después de recibir.
+
+20. perdida(apriori, matriz)
+Recibe: Probabilidades a priori y matriz.
+Paso a paso: 1. Calcula probabilidades conjuntas. 2. Suma -P(entrada,salida)·log2(P(salida|entrada)).
+Devuelve: H(salida|entrada): incertidumbre de la salida aun sabiendo la entrada.
+
+21. entropiaAfin(apriori, matriz)
+Recibe: Probabilidades a priori y matriz.
+Paso a paso: 1. Calcula la matriz conjunta. 2. Recorre sus probabilidades positivas. 3. Suma -p·log2(p).
+Devuelve: Entropía conjunta H(entrada,salida).
+
+22. informacionMutua(apriori, matriz)
+Recibe: Probabilidades a priori y matriz.
+Paso a paso: 1. Calcula probabilidades conjuntas y de salida. 2. Para cada par posible compara P(entrada,salida) con P(entrada)·P(salida). 3. Suma el aporte logarítmico.
+Devuelve: I(entrada;salida): información sobre la entrada que aporta la salida.
+
+23. canalCompuesto(matriz1, matriz2)
+Recibe: Dos matrices de transición compatibles.
+Paso a paso: 1. Toma una fila de la primera y una columna de la segunda. 2. Multiplica los elementos correspondientes. 3. Los suma y forma una nueva casilla.
+Devuelve: Matriz del canal equivalente a pasar por ambos canales en serie.
+
+24. columnasProporcionales(matriz, c1, c2)
+Recibe: Matriz y dos índices de columna.
+Paso a paso: 1. Compara ambas columnas fila por fila. 2. Busca que mantengan una misma razón. 3. Usa tolerancia pequeña para ceros y decimales.
+Devuelve: True si las columnas son proporcionales.
+
+25. matrizReduccion(matriz, c1, c2)
+Recibe: Matriz y dos columnas a unir.
+Paso a paso: 1. Calcula cuántas columnas quedarán. 2. Crea una matriz que dirige ambas columnas elegidas a una sola. 3. Mantiene separadas las demás.
+Devuelve: Matriz auxiliar de reducción.
+
+26. reducirCanal(matriz)
+Recibe: Matriz de transición.
+Paso a paso: 1. Copia la matriz. 2. Busca dos columnas proporcionales. 3. Construye la matriz de reducción. 4. Compone ambos canales para unir esas salidas. 5. Repite hasta que no haya más columnas proporcionales.
+Devuelve: Matriz reducida que conserva la información mutua.
+
+27. capacidadBinaria(matriz, paso)
+Recibe: Matriz con dos entradas y un paso de búsqueda.
+Paso a paso: 1. Prueba P(0)=p y P(1)=1-p para distintos valores de p entre 0 y 1. 2. Calcula la información mutua de cada opción. 3. Guarda el máximo y la probabilidad que lo logró.
+Devuelve: Capacidad aproximada y P(0) óptima; P(1)=1-P(0). Paso más chico da más precisión.
+
+28. probabilidadError(apriori, matriz)
+Recibe: Probabilidades a priori y matriz.
+Paso a paso: 1. Para cada salida calcula la probabilidad conjunta con cada entrada. 2. Se queda con la entrada más probable. 3. Suma las probabilidades de las demás entradas como errores.
+Devuelve: Probabilidad mínima de error con decisión MAP.
+
+29. verificarMatriz(matriz)
+Recibe: Matriz de filas de bits como cadenas.
+Paso a paso: 1. Cuenta los unos en cada fila y marca las de paridad impar. 2. Cuenta los unos en cada columna y marca las de paridad impar.
+Devuelve: Índices de filas y columnas con error de paridad, empezando desde 0. Supone paridad par.
+
+30. decodificarMensaje(matriz)
+Recibe: Matriz de filas de 8 bits con paridad.
+Paso a paso: 1. Llama a verificarMatriz. 2. Si falla una fila y una columna, invierte el bit de su intersección. 3. Si hay otro patrón de fallas, devuelve cadena vacía. 4. Saltea la primera fila y convierte los primeros 7 bits de cada fila restante a caracteres.
+Devuelve: Mensaje ASCII corregido, o cadena vacía si no puede corregir ese patrón. Modifica la matriz recibida.
+
+31. decodificar(mensaje, alfabeto, codigo)
+Recibe: Mensaje de bits, alfabeto y código.
+Paso a paso: 1. Lee el mensaje bit por bit y acumula en una cadena. 2. Cuando coincide con una palabra del código, busca su posición. 3. Agrega el símbolo correspondiente y reinicia el acumulador.
+Devuelve: Mensaje de símbolos decodificado. Requiere código prefijo; no avisa si sobran bits incompletos.
+
+RECOMENDACIONES PARA EL PARCIAL
+- Para la fuente: obtenerFuente -> entropia -> extenderFuente -> huffman -> longitudMedia -> rendimiento/redundancia.
+- Para el canal: probabilidadesApriori + matrizCanal -> equivocacion/perdida/informacionMutua.
+- Para capacidad: capacidadBinaria -> devuelve (capacidad, P(0) óptima).
+- Para errores de paridad: verificarMatriz -> decodificarMensaje.
+- decodificar(mensaje, alfabeto, codigo) es para un mensaje codificado, no para corregir paridad.
+- La tasaCompresion del archivo usa bytes almacenados; puede diferir de una relación teórica de bits por símbolo.
+- verificarShannon comprueba la cota de un código; si usás bloques, compará todo por bloque.

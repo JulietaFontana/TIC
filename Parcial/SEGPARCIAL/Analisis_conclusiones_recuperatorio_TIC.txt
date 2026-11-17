@@ -1,0 +1,60 @@
+RECUPERATORIO TIC — ANÁLISIS E INTERPRETACIÓN DE RESULTADOS
+
+EJERCICIO 1 — FUENTES Y CODIFICACIÓN
+
+a) ENTROPÍA
+La entropía obtenida es cercana al máximo posible para cuatro símbolos. Esto indica que la fuente presenta una incertidumbre elevada: 
+los símbolos tienen probabilidades relativamente parecidas y, por lo tanto, no es fácil anticipar cuál aparecerá. Como no son exactamente 
+equiprobables, todavía existe cierto margen para aprovechar sus diferencias de probabilidad al codificar.
+
+b) CÓDIGO ÓPTIMO PARA LA EXTENSIÓN DE ORDEN 3
+Al agrupar los símbolos de a tres, se forman bloques con distintas probabilidades. Huffman aprovecha esas diferencias asignando, en general, 
+palabras más cortas a los bloques más probables y más largas a los menos probables. De esta manera se obtiene un código prefijo óptimo para esa 
+distribución. La extensión permite aprovechar mejor la información estadística de la fuente, aunque aumenta la cantidad de combinaciones que hay 
+que manejar.
+
+c) RENDIMIENTO Y REDUNDANCIA
+El código extendido presenta mayor rendimiento y menor redundancia que el original. Esto muestra que, al codificar bloques de símbolos, se puede 
+reducir la cantidad de bits adicionales respecto del mínimo teórico. Al aumentar el orden de extensión, es posible acercar cada vez más la 
+longitud media por símbolo a la entropía. Sin embargo, no significa que todos los aumentos de orden produzcan una mejora estricta, y una 
+extensión muy grande también incrementa la complejidad y el tamaño del código.
+
+d) COMPARACIÓN ENTRE ENTROPÍA Y LONGITUD MEDIA
+En ambos casos la longitud media por símbolo es mayor o igual que la entropía, como establece el límite de Shannon para codificación sin pérdida. 
+La extensión de orden 3 se acerca más a ese límite que el código original; por eso resulta más eficiente. La comparación debe hacerse en las 
+mismas unidades: para la extensión se divide la longitud media del bloque por tres. La idea principal es que la extensión mejora la aproximación 
+al límite teórico, pero no puede superarlo.
+
+
+EJERCICIO 2 — CANALES DE INFORMACIÓN
+
+a) DISTRIBUCIÓN ÓPTIMA DE ENTRADA
+La distribución que maximiza la información transmitida no necesariamente asigna la misma probabilidad a ambos símbolos. Esto sucede porque el 
+canal no se comporta de manera idéntica para todas las entradas: un símbolo produce una salida segura y el otro puede producir varias. Por eso, 
+ajustar las probabilidades de entrada permite aprovechar mejor el canal y alcanzar su capacidad. La capacidad representa la máxima información 
+mutua posible por uso del canal.
+
+b) EQUIVOCACIÓN, PÉRDIDA E INFORMACIÓN MUTUA
+La equivocación es mayor que cero porque una salida, C, puede provenir de cualquiera de las dos entradas. Por lo tanto, recibirla no permite 
+saber con certeza qué se transmitió: el canal no es sin ruido. La pérdida también es mayor que cero porque, cuando se transmite 1, pueden 
+aparecer distintas salidas; por eso el canal tampoco es determinante. Aun así, la información mutua es positiva, lo que demuestra que la salida 
+aporta información útil sobre la entrada. Como se emplea la distribución óptima, esa información mutua alcanza la capacidad del canal. 
+En síntesis, el canal comunica información, pero conserva incertidumbre.
+
+c) DETECCIÓN Y CORRECCIÓN DE ERRORES
+Los bits de paridad permiten comprobar si el mensaje recibido conserva la consistencia esperada. Cuando aparece una única fila y una única 
+columna con paridad incorrecta, su intersección identifica un posible bit erróneo y permite corregirlo. Esto muestra que la paridad bidimensional 
+no solo puede detectar ciertos errores, sino también localizar y corregir uno aislado. Su limitación es que, ante varios errores, puede no ser 
+posible identificarlos correctamente e incluso algunos patrones pueden pasar inadvertidos.
+
+d) POSIBILIDAD DE TRANSMISIÓN POR EL CANAL
+Las probabilidades nulas de la matriz indican qué transiciones son imposibles: si se envía 0, no se puede recibir A ni B, solamente C. 
+En cambio, si se recibe A o B, se sabe que se envió 1. La salida C es ambigua porque puede proceder de ambas entradas. Con la regla de máxima 
+posibilidad se elige 1 para A o B y 0 para C, pero esa elección es una estimación, no una certeza sobre lo transmitido. Para concluir que un 
+mensaje concreto no pudo pasar por el canal hay que encontrar una transición de probabilidad cero en la correspondencia real entre entradas y 
+salidas; la ambigüedad por sí sola no demuestra imposibilidad.
+
+IDEA PARA EL PARCIAL
+No hace falta repetir los números que ya aparecen en los resultados. Conviene explicar qué indican: si la fuente es predecible o no, por qué 
+una extensión mejora la eficiencia, qué límites impone Shannon, qué incertidumbre introduce el canal y qué se puede o no recuperar del mensaje 
+recibido.

@@ -1,0 +1,55 @@
+Ejercicio 1 — Fuente de información y codificación
+**a** Se identificaron los cuatro símbolos de la fuente (J, K, L y M) y se calcularon sus probabilidades mediante sus frecuencias relativas 
+en el mensaje: P(J) = 0,30; P(K) = 0,05; P(L) = 0,35 y P(M) = 0,30. Aplicando la fórmula de Shannon se obtuvo una entropía de 1,7884 bits/símbolo.
+Como el máximo para cuatro símbolos es 2 bits, la fuente presenta una incertidumbre elevada, aunque no máxima, debido a que sus símbolos no son 
+equiprobables.
+
+**b** Se aplicó el algoritmo de Huffman para generar un código binario óptimo, asignando las palabras J = 01, K = 00, L = 11 y M = 10. 
+Todas tienen longitud 2, por lo que el código es instantáneo y unívocamente decodificable. Su longitud media es mínima entre los códigos 
+binarios prefijos para esta distribución.
+
+**c** La tasa de compresión obtenida fue 4:1, comparando los 8 bits por carácter de la representación ASCII con los 2 bits por símbolo del 
+código generado. Esto significa que el mensaje codificado ocupa una cuarta parte del tamaño original, logrando una reducción del 75 %.
+
+**d** Para la extensión de orden 3 se calcularon las probabilidades de las 64 combinaciones posibles de tres símbolos, suponiendo que la 
+fuente es sin memoria. Luego se aplicó Huffman para obtener un código óptimo que asigna palabras de distintas longitudes según la probabilidad 
+de cada bloque, aprovechando mejor la distribución de la fuente.
+
+**e** Para el código original se obtuvo L = 2 bits/símbolo, un rendimiento del 89,42 % y una redundancia del 10,58 %. Para la extensión se 
+obtuvo L = 5,3835 bits por bloque, un rendimiento del 99,66 % y una redundancia del 0,34 %. El rendimiento se calculó como η = H/L y la 
+redundancia como R = 1 − η. La extensión presenta mayor eficiencia porque su longitud media por símbolo es aproximadamente 1,7945 bits, más 
+cercana a la entropía de la fuente.
+
+**f** Ambos códigos cumplen el Primer Teorema de Shannon, ya que sus longitudes medias son mayores o iguales que sus respectivas entropías. 
+Para la fuente original, 1,7884 ≤ 2; para la extensión, H(S³) = 3 × 1,7884 = 5,3651 ≤ 5,3835. Esto confirma que ambos respetan el límite teórico 
+de compresión, siendo el código extendido más eficiente por aproximarse más a dicho límite.
+
+Ejercicio 2 — Canal de información
+**a** A partir de las frecuencias relativas de los símbolos de entrada se obtuvieron las probabilidades a priori P(0) = 0,46875 y P(1) = 0,53125.
+ Luego, contando las salidas A, B, C y D correspondientes a cada entrada, se construyó la matriz de transición del canal. Para la entrada 0 se 
+ obtuvo [0,3333; 0,6667; 0; 0], y para la entrada 1, [0,1765; 0,3529; 0,2353; 0,2353]. Cada fila suma 1, ya que representa una distribución de 
+ probabilidades condicionada a una entrada.
+
+**b** El canal no es sin ruido porque existen salidas, como A y B, que pueden provenir de ambas entradas, por lo que no siempre es posible 
+identificar qué símbolo fue transmitido. Tampoco es determinante, ya que una misma entrada puede producir diferentes salidas. Esto implica que 
+existen tanto equivocación como pérdida de información.
+
+**c** Se obtuvo una equivocación H(A|B) = 0,7158 bits, que representa la incertidumbre restante sobre la entrada después de conocer la salida.
+ La pérdida H(B|A) = 1,4686 bits indica la incertidumbre sobre la salida aun conociendo la entrada. La información mutua I(A;B) = 0,2814 bits 
+ representa la información que efectivamente aporta la salida sobre la entrada. Como la entropía de entrada es aproximadamente 0,9972 bits, 
+ la información recuperada es relativamente baja y permanece una incertidumbre considerable.
+
+**d** Se efectuaron reducciones suficientes agrupando las columnas proporcionales de la matriz, ya que estas aportan información equivalente 
+sobre la entrada. Las columnas A y B se agruparon, al igual que C y D, obteniéndose la matriz reducida [[1; 0], [0,5294; 0,4706]]. 
+Esta reducción conserva la información mutua del canal original y simplifica su análisis sin perder información relevante sobre la entrada.
+
+**e** Se calculó la capacidad del canal maximizando la información mutua respecto de la distribución de entrada. Se obtuvo C = 0,2988 bits 
+por uso, con distribución óptima P(0) = 0,6025 y P(1) = 0,3975. La capacidad es ligeramente superior a la información mutua calculada con las 
+probabilidades originales, lo que indica que puede mejorarse el aprovechamiento del canal modificando la distribución de entrada. 
+Aplicando la regla de decisión de máxima probabilidad a posteriori se obtuvo una probabilidad de error de 0,28125, equivalente al 28,125 % de 
+decisiones incorrectas esperadas.
+
+**f** Se analizaron los bits de paridad vertical, longitudinal y cruzada del mensaje para detectar y corregir errores. Se identificó una 
+inconsistencia en la fila de índice 1 y la columna de índice 6, cuya intersección permite localizar el bit erróneo, suponiendo un único error. 
+Al invertir dicho bit y decodificar el mensaje se obtuvo «LUZ». Esto demuestra la utilidad de la paridad bidimensional para localizar y corregir 
+errores individuales, aunque no garantiza la corrección de cualquier combinación de errores múltiples.

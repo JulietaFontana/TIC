@@ -19,9 +19,9 @@ def obtenerFuente(mensaje): #generaAlfabeto y prob
 def entropia(probabilidades):
     entr = 0
     for p in probabilidades:
-        entr -= p * math.log2(p)
+        if p > 0:
+            entr -= p * math.log2(p)
     return entr
-
 
 def codificarBytes(mensaje, alfabeto, codigo):
     bits = ""
@@ -406,3 +406,66 @@ def probabilidadError(apriori, matriz):
         error += sum(probabilidades) - max(probabilidades)
 
     return error
+
+
+def verificarMatriz(matriz):
+    filasError = []
+    columnasError = []
+
+    for i in range(len(matriz)):  #  filas
+        if matriz[i].count("1") % 2 != 0:
+            filasError.append(i)
+
+    for j in range(len(matriz[0])):  # columnas
+        unos = 0
+
+        for i in range(len(matriz)):
+            if matriz[i][j] == "1":
+                unos += 1
+
+        if unos % 2 != 0:
+            columnasError.append(j)
+
+    return filasError, columnasError
+
+def decodificarMensaje(matriz):
+    filas, columnas = verificarMatriz(matriz)
+
+    if len(filas) == 1 and len(columnas) == 1:
+        i = filas[0]
+        j = columnas[0]
+
+        fila = list(matriz[i])
+
+        if fila[j] == "0":
+            fila[j] = "1"
+        else:
+            fila[j] = "0"
+
+        matriz[i] = "".join(fila)
+
+    elif len(filas) != 0 or len(columnas) != 0:
+        return ""
+
+    mensaje = ""
+
+    for i in range(1, len(matriz)):
+        binario = matriz[i][:7]
+        mensaje += chr(int(binario, 2))
+
+
+    return mensaje
+
+def decodificar(mensaje, alfabeto, codigo):
+    resultado = ""
+    bits = ""
+
+    for bit in mensaje:
+        bits += bit
+
+        if bits in codigo:
+            posicion = codigo.index(bits)
+            resultado += alfabeto[posicion]
+            bits = ""
+
+    return resultado
